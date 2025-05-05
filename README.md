@@ -107,9 +107,9 @@ A plug-and-play authentication system built specifically for Cloudflare Pages an
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone [<repository-url>](https://github.com/mulls-io/cf-auth.git)
 
-cd <repository-name>
+cd cf-auth
 ```
 
 2. Install dependencies:
