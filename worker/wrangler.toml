@@ -1,0 +1,31 @@
+name = "cf-auth-worker"
+main = "worker.ts"
+compatibility_date = "2024-06-01"
+
+# If using D1, KV, or other storage, add bindings here
+# Example for D1:
+[[d1_databases]]
+binding = "DB"
+database_name = "auth-db"
+database_id = ""          # You'll get this after running wrangler d1 create
+
+# Domain configuration is now handled by environment variables
+# See README.md for configuration instructions
+
+[vars]
+# Default values for local development
+SITE_URL = "http://localhost:5173"
+ASSETS_URL = "http://localhost:5173"
+
+# Production values should be set in the Cloudflare dashboard or via wrangler secret
+# wrangler secret put SITE_URL
+# wrangler secret put ASSETS_URL
+
+# Serve on your domain
+[[routes]]
+pattern = "coordier.com/*"
+zone_name = "coordier.com"
+
+# wrangler.toml (wrangler v3.88.0^)
+[observability.logs]
+enabled = true

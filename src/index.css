@@ -1,0 +1,112 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 234 89% 59%; /* Coordier brand color - Indigo */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 237 12% 50%;
+
+    --accent: 160 84% 39%; /* Coordier accent - Emerald */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 234 89% 59%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24;
+  }
+  
+  .feature-card {
+    @apply bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100;
+  }
+  
+  .btn-primary {
+    @apply bg-coordier hover:bg-coordier-light text-white py-3 px-6 rounded-lg font-medium transition-colors duration-300;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-coordier border border-coordier hover:bg-coordier-subtle py-3 px-6 rounded-lg font-medium transition-colors duration-300;
+  }
+  
+  .highlight-text {
+    @apply text-coordier font-medium;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-gray-900;
+  }
+  
+  .section-subtitle {
+    @apply text-xl text-gray-600 mb-8 md:mb-12 max-w-3xl;
+  }
+  
+  .gradient-bg {
+    @apply bg-gradient-to-r from-coordier to-coordier-light;
+  }
+  
+  .card-shadow {
+    @apply shadow-[0_8px_30px_rgb(0,0,0,0.07)];
+  }
+  
+  .testimonial-card {
+    @apply bg-white p-6 rounded-2xl shadow-sm border border-gray-100;
+  }
+
+  .faq-item {
+    @apply border-b border-gray-200 py-5;
+  }
+  
+  .pricing-card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-full;
+  }
+  
+  .pricing-popular {
+    @apply border-2 border-coordier relative;
+  }
+
+  .feature-icon-container {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-white;
+  }
+}
