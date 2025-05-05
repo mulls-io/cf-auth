@@ -20,13 +20,31 @@ export default function Login() {
       const result = await login(email, password);
 
       if (result.success) {
+        console.log("[Login] Attempting query invalidation...");
         await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
-        console.log("[Login] Session query invalidated.");
+        console.log("[Login] Query invalidation finished.");
 
+        // Explicitly refetch and wait for the session query to settle
+        try {
+          console.log("[Login] Refetching session query...");
+          await queryClient.refetchQueries({
+            queryKey: sessionQueryKey,
+            exact: true,
+          });
+          console.log("[Login] Session query refetch finished.");
+        } catch (refetchError) {
+          console.error(
+            "[Login] Error refetching session query:",
+            refetchError
+          );
+          // Decide how to handle refetch error
+        }
+
+        // Delay slightly AFTER refetching, then navigate
         setTimeout(() => {
           console.log("[Login] Navigating to dashboard after delay.");
           navigate("/dashboard");
-        }, 150);
+        }, 50); // Shorter delay might be okay now
       } else {
         setError(result.error || "Login failed");
       }

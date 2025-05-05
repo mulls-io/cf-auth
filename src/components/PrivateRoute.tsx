@@ -7,13 +7,13 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const { user, loading, error } = useSession();
+  const { isAuthenticated, loading, error } = useSession();
   const location = useLocation();
 
   console.log(
     `PrivateRoute Check: Path=${
       location.pathname
-    }, Loading=${loading}, User=${!!user}, Error=${!!error}`
+    }, Loading=${loading}, Authenticated=${isAuthenticated}, Error=${!!error}`
   );
 
   if (loading) {
@@ -27,9 +27,11 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
     );
   }
 
-  if (error || !user) {
+  if (error || !isAuthenticated) {
     console.log(
-      `PrivateRoute Redirecting: Path=${location.pathname} -> /login`
+      `PrivateRoute Redirecting: Path=${
+        location.pathname
+      } -> /login (Error: ${!!error}, Authenticated: ${isAuthenticated})`
     );
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them

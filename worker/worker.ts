@@ -91,18 +91,18 @@ export default {
           
           try {
             const { userId } = await auth.createUser(db, body.email, body.password);
-            const token = await auth.generateId('token_');
-            const session = await auth.createSession(db, userId);
             
+            // Get the actual session token from createSession
+            const sessionToken = await auth.createSession(db, userId); 
+
             console.log(`User created successfully: ${userId}`);
             
             response = new Response(JSON.stringify({ success: true, userId }), {
               status: 200,
-              headers: {
-                'Content-Type': 'application/json',
-                // Set secure HTTP-only cookie for auth
-                'Set-Cookie': `auth-token=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${60 * 60 * 24 * 30}`, // 30 days
-                ...corsHeaders
+              headers: { 
+                // Use the correct sessionToken in the Set-Cookie header
+                ...{ 'Content-Type': 'application/json', 'Set-Cookie': `auth-token=${sessionToken}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${60 * 60 * 24 * 30}` }, 
+                ...corsHeaders 
               }
             });
             return response; // Return immediately

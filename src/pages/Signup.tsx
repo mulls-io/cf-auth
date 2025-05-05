@@ -20,13 +20,32 @@ export default function Signup() {
       const result = await signup(email, password);
 
       if (result.success) {
+        console.log("[Signup] Attempting query invalidation...");
         await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
-        console.log("[Signup] Session query invalidated.");
+        console.log("[Signup] Query invalidation finished.");
 
+        // Explicitly refetch and wait for the session query to settle
+        try {
+          console.log("[Signup] Refetching session query...");
+          await queryClient.refetchQueries({
+            queryKey: sessionQueryKey,
+            exact: true,
+          });
+          console.log("[Signup] Session query refetch finished.");
+        } catch (refetchError) {
+          console.error(
+            "[Signup] Error refetching session query:",
+            refetchError
+          );
+          // Decide how to handle refetch error - maybe still try navigating?
+          // Or show an error to the user?
+        }
+
+        // Delay slightly AFTER refetching, then navigate
         setTimeout(() => {
           console.log("[Signup] Navigating to dashboard after delay.");
           navigate("/dashboard");
-        }, 150);
+        }, 50); // Shorter delay might be okay now
       } else {
         setError(result.error || "Signup failed");
       }
