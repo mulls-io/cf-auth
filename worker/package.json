@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "kysely": "^0.27.0",
-    "kysely-d1": "^0.3.0"
+    "kysely-d1": "^0.3.0",
+    "resend": "^2.0.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250504.0",

@@ -6,7 +6,6 @@ import type { Database } from './types';
 
 export interface Env {
   DB: D1Database;
-  BETTER_AUTH_URL: string;
   SITE_URL: string;
   ASSETS_URL: string;
 }
