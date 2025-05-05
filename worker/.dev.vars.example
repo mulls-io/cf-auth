@@ -1,0 +1,16 @@
+# Authentication
+AUTH_SECRET=your-secret-here
+
+# CORS
+ALLOWED_ORIGINS=http://localhost:5173,https://my-app.pages.dev,https://my-domain.com
+
+# URLs
+SITE_URL=http://localhost:5173
+ASSETS_URL=http://localhost:5173
+
+# Email (Resend)
+RESEND_API_KEY=your-resend-api-key
+FROM_EMAIL=noreply@yourdomain.com (onboarding@resend.dev for development)
+
+# Database binding is configured in wrangler.toml
+# DB=auth-db
