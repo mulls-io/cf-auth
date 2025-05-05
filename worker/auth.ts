@@ -42,32 +42,55 @@ async function createSession(db: Kysely<Database>, userId: string): Promise<stri
   const token = generateToken();
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days 
   
-  await db.insertInto('session')
-    .values({
-      id: sessionId,
-      userId,
-      token,
-      expiresAt: expiresAt.toISOString(),
-      ipAddress: null,
-      userAgent: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    })
-    .execute();
+  console.log(`[createSession] Attempting to insert session: ID=${sessionId}, UserID=${userId}, Token=${token.substring(0, 6)}...`);
+
+  try {
+    await db.insertInto('session')
+      .values({
+        id: sessionId,
+        userId,
+        token,
+        expiresAt: expiresAt.toISOString(),
+        ipAddress: null,
+        userAgent: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      })
+      .execute();
+    console.log(`[createSession] Successfully inserted session ID: ${sessionId}`);
+  } catch (dbError) {
+    console.error(`[createSession] FAILED to insert session ID ${sessionId}:`, dbError);
+    throw dbError; // Re-throw the error after logging
+  }
   
   return token;
 }
 
 // Verify session from token
 async function verifySession(db: Kysely<Database>, token: string): Promise<{userId: string} | null> {
-  const session = await db
-    .selectFrom('session')
-    .where('token', '=', token)
-    .where('expiresAt', '>', new Date().toISOString())
-    .select(['userId'])
-    .executeTakeFirst();
-  
-  return session || null;
+  if (!token) {
+      console.log("[verifySession] Received null or empty token.");
+      return null;
+  }
+  console.log(`[verifySession] Verifying token: ${token.substring(0, 6)}...`);
+  try {
+      const session = await db
+        .selectFrom('session')
+        .where('token', '=', token)
+        .where('expiresAt', '>', new Date().toISOString())
+        .select(['userId'])
+        .executeTakeFirst();
+    
+      if (session) {
+          console.log(`[verifySession] Found valid session for token ${token.substring(0, 6)}..., UserID: ${session.userId}`);
+      } else {
+          console.log(`[verifySession] No valid session found for token ${token.substring(0, 6)}...`);
+      }
+      return session || null;
+  } catch (dbError) {
+      console.error(`[verifySession] Database error verifying token ${token.substring(0, 6)}...:`, dbError);
+      return null; // Return null on DB error during verification
+  }
 }
 
 // User creation 

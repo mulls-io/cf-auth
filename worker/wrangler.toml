@@ -6,25 +6,21 @@ compatibility_date = "2024-06-01"
 # Example for D1:
 [[d1_databases]]
 binding = "DB"
-database_name = "auth-db"
-database_id = ""          # You'll get this after running wrangler d1 create
+database_name = "auth-db-test"
+database_id = "d5fa0b3c-39b6-4384-8fb0-31bd0488c58f"        # You'll get this after running wrangler d1 create
 
 # Domain configuration is now handled by environment variables
 # See README.md for configuration instructions
 
-[vars]
-# Default values for local development
-SITE_URL = "http://localhost:5173"
-ASSETS_URL = "http://localhost:5173"
 
 # Production values should be set in the Cloudflare dashboard or via wrangler secret
 # wrangler secret put SITE_URL
 # wrangler secret put ASSETS_URL
+[vars]
+SITE_URL = "https://auth.mulls.io"
+ASSETS_URL = "https://auth.mulls.io" 
+ALLOWED_ORIGINS = "https://auth.mulls.io"
 
-# Serve on your domain
-[[routes]]
-pattern = "coordier.com/*"
-zone_name = "coordier.com"
 
 # wrangler.toml (wrangler v3.88.0^)
 [observability.logs]

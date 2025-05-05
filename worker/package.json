@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "setup-db": "wrangler d1 execute auth-db --file ./migrations/001_create_auth.sql"
+    "setup-db": "wrangler d1 execute auth-db-test --file ./migrations/001_create_auth.sql"
   },
   "dependencies": {
     "kysely": "^0.27.0",
@@ -15,6 +15,6 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250504.0",
     "typescript": "^5.0.0",
-    "wrangler": "^3.0.0"
+    "wrangler": "^4.14.1"
   }
 }

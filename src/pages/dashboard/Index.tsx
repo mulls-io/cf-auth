@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession, logout } from "../../lib/auth-client";
 
 export default function Dashboard() {
-  const { user, loading, error } = useSession();
+  const { user, loading } = useSession();
   const navigate = useNavigate();
 
   async function handleLogout() {
@@ -12,34 +12,22 @@ export default function Dashboard() {
     }
   }
 
-  // If loading, show spinner
+  // If loading, show spinner (or null/placeholder)
   if (loading) {
     return (
-      <div style={{ padding: "40px", textAlign: "center" }}>Loading...</div>
+      <div style={{ padding: "40px", textAlign: "center" }}>
+        Loading Dashboard...
+      </div>
     );
   }
 
-  // If error or no user (not authenticated)
-  if (error || !user) {
+  // PrivateRoute handles the redirect, so if we reach here and still have no user,
+  // it's an unexpected state, but we shouldn't render the auth error/login button.
+  // We could show a generic error or just nothing.
+  if (!user) {
     return (
       <div style={{ padding: "40px", textAlign: "center" }}>
-        <h2>Authentication Error</h2>
-        <p>{error || "You must be logged in to view this page"}</p>
-        {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-        <button
-          onClick={() => navigate("/login")}
-          style={{
-            padding: "10px 20px",
-            background: "#0070f3",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            marginTop: "20px",
-          }}
-        >
-          Go to Login
-        </button>
+        Error: User data not available after authentication check.
       </div>
     );
   }

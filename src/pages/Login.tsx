@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../lib/auth-client";
+import { useNavigate, Link } from "react-router-dom";
+import { login, sessionQueryKey } from "../lib/auth-client";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,7 +20,13 @@ export default function Login() {
       const result = await login(email, password);
 
       if (result.success) {
-        navigate("/dashboard");
+        await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
+        console.log("[Login] Session query invalidated.");
+
+        setTimeout(() => {
+          console.log("[Login] Navigating to dashboard after delay.");
+          navigate("/dashboard");
+        }, 150);
       } else {
         setError(result.error || "Login failed");
       }
@@ -101,9 +109,9 @@ export default function Login() {
           }}
         >
           Don't have an account?{" "}
-          <a href="/signup" style={{ color: "#0070f3" }}>
+          <Link to="/signup" style={{ color: "#0070f3" }}>
             Sign up
-          </a>
+          </Link>
         </div>
       </form>
     </div>
